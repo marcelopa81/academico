@@ -33,6 +33,9 @@ public class Aluno implements Serializable{
 	@ManyToMany(mappedBy = "listaAluno")
 	private List<Curso> listaCurso = new ArrayList<>();
 	
+	@ManyToMany(mappedBy = "listaDisciplina")
+	private List<Disciplina> listaDisciplina =  new ArrayList<>();
+	
 	public Aluno() {
 	}
 	
@@ -47,6 +50,11 @@ public class Aluno implements Serializable{
 	public List<Curso> getListaCurso() {
 		return listaCurso;
 	}
+	
+	public List<Disciplina> getListaDisciplina() {
+		return listaDisciplina;
+	}
+	
 
 	public void adicionarCurso (Curso c) {
 		
@@ -54,6 +62,15 @@ public class Aluno implements Serializable{
 			listaCurso.add(c);
 			c.adicionarAluno(this);
 		}		
+	}
+	
+public void adicionarDisciplina (Disciplina d) {
+		
+		if (!listaDisciplina.contains(d)) {
+			listaDisciplina.add(d);
+			d.adicionarAluno(this);
+		}
+		
 	}
 
 	public Integer getIdaluno() {

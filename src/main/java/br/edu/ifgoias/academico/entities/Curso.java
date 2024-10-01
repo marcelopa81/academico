@@ -34,6 +34,14 @@ public class Curso implements Serializable{
 				inverseJoinColumns = @JoinColumn(name="idaluno"))
 	private List<Aluno> listaAluno = new ArrayList<>();
 	
+	@ManyToMany
+	@JsonIgnore
+	@JoinTable(name = "disciplina_curso",
+				joinColumns = @JoinColumn(name = "idcurso"),
+				inverseJoinColumns = @JoinColumn(name="idDisciplina"))
+	private List<Disciplina> listaDisciplina = new ArrayList<>();
+	
+	
 	public Curso() {
 		
 	}
@@ -48,6 +56,7 @@ public class Curso implements Serializable{
 		return listaAluno;
 	}
 
+
 	public void adicionarAluno (Aluno a) {
 		
 		if (!listaAluno.contains(a)) {
@@ -55,6 +64,18 @@ public class Curso implements Serializable{
 			a.adicionarCurso(this);
 		}
 		
+	}
+	
+
+	public List<Disciplina> getListaDisciplina () {
+		return listaDisciplina;
+	}
+
+	public void adicionarDisciplina (Disciplina d) {
+		if (!listaDisciplina.contains(d)) {
+			listaDisciplina.add(d);
+			d.adicionarCurso(this);
+		}
 	}
 
 	public Integer getIdcurso() {
