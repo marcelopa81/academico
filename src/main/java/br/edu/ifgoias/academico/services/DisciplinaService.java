@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
-import br.edu.ifgoias.academico.entities.Curso;
 import br.edu.ifgoias.academico.entities.Disciplina;
 import br.edu.ifgoias.academico.repositories.DisciplinaRepository;
 
