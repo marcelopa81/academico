@@ -24,7 +24,6 @@ public class Config implements CommandLineRunner {
 	@Autowired
 	private DisciplinaRepository discRep;
 	
-	@Autowired
 	private AlunoRepository alunoRep;
 	
 	@Override
@@ -37,35 +36,20 @@ public class Config implements CommandLineRunner {
 		//cursoRep.save(c2);
 		
 		
-		
 		//System.out.println("Quantidade de cursos: " + cursoRep.count());
 		
 		
-		//Disciplina d1 = new Disciplina();
-	//	d1.setNomeDisciplina("Cálculo 1");
-		//d1.setCargaHoraria(128);
+		//Disciplina d3 = new Disciplina();
+		//d3.setNomeDisciplina("Lógica de programação");
+		//d3.setCargaHoraria(54);
 		
-		//System.out.println("Carga Horaria: " + d1.getCargaHoraria());
-
+		//discRep.save(d3);
 		
-		//discRep.save(d1);
+	
+	
 		
+		// System.out.println("Disciplina salva com aluno: " + alunoRep.getNome());
 		
-		Optional<Aluno> alunoOptional = alunoRep.findById(1);
-		if (alunoOptional.isPresent()) {
-		    Aluno aluno = alunoOptional.get();
-
-		    // Crie a disciplina e associe o aluno
-		    Disciplina d1 = new Disciplina();
-		    d1.setNomeDisciplina("Cálculo 1");
-		    d1.setCargaHoraria(128);
-		    //d1.setAluno(aluno); // Setando o aluno
-
-		    // Salve a disciplina no banco de dados
-		    discRep.save(d1);
-
-		    System.out.println("Disciplina salva com aluno: " + aluno.getNome());
-		}
 	}
 
 }
