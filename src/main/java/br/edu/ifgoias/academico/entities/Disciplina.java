@@ -5,45 +5,36 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 
 @Entity
 public class Disciplina implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer idDisciplina;
+	private Integer iddisciplina;
 	
 	@Column(name = "nomedisciplina", nullable = false)
 	private String nomeDisciplina;
 	
-	@Column(name = "cargaHoraria", nullable = false)
+	@Column(name = "cargahoraria", nullable = false)
 	private Integer cargaHoraria;
 
-	@ManyToMany
-	@JsonIgnore
-	@JoinTable(name = "aluno_disciplina",
-				joinColumns = @JoinColumn(name = "idDisciplina"),
-				inverseJoinColumns = @JoinColumn(name="idAluno"))
-	private List<Aluno> listaAluno = new ArrayList<>();
+	@ManyToMany(mappedBy = "listaDisciplina")
+    private List<Aluno> listaAluno = new ArrayList<>();
 
 	
-	@ManyToMany
-	@JsonIgnore
-	@JoinTable(name = "curso_disciplina",
-				joinColumns = @JoinColumn(name = "idDisciplina"),
-				inverseJoinColumns = @JoinColumn(name="idCurso"))
-	private List<Curso> listaCurso = new ArrayList<>();
-	
+		
 	public Disciplina() {
 
 	}
@@ -51,38 +42,27 @@ public class Disciplina implements Serializable{
 
 
 	public Disciplina(Integer idDisciplina, String nomeDisciplina, Integer cargaHoraria) {
-		this.idDisciplina = idDisciplina;
+		this.iddisciplina = idDisciplina;
 		this.nomeDisciplina = nomeDisciplina;
 		this.cargaHoraria = cargaHoraria;
 	}
 
 
-	public List<Aluno> getListaAluno() {
-		return listaAluno;
-	}
-
-	public List<Curso> getListaCurso() {
-		return listaCurso;
-	}
+	  public List<Aluno> getListaAluno() {
+	        return listaAluno;
+	    }
 
 
 	public void adicionarAluno(Aluno aluno) {
-		if (!listaAluno.contains(aluno)) {
-			listaAluno.add(aluno);
-			aluno.adicionarDisciplina(this);
-		}
-		
-	}
+        if (!listaAluno.contains(aluno)) {
+            listaAluno.add(aluno);
+            aluno.getListaDisciplina().add(this); // Adiciona a disciplina na lista de disciplinas do aluno
+        }
+    }
 	
-	public void adicionarCurso(Curso curso) {
-		if (!listaCurso.contains(curso)) {
-			listaCurso.add(curso);
-			curso.adicionarDisciplina(this);
-		}
-	}
 
 	public void setIdDisciplina(Integer idDisciplina) {
-		this.idDisciplina = idDisciplina;
+		this.iddisciplina = idDisciplina;
 	}
 
 
@@ -113,7 +93,7 @@ public class Disciplina implements Serializable{
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(cargaHoraria, idDisciplina, nomeDisciplina);
+		return Objects.hash(cargaHoraria, iddisciplina, nomeDisciplina);
 	}
 
 
@@ -127,7 +107,7 @@ public class Disciplina implements Serializable{
 		if (getClass() != obj.getClass())
 			return false;
 		Disciplina other = (Disciplina) obj;
-		return Objects.equals(cargaHoraria, other.cargaHoraria) && Objects.equals(idDisciplina, other.idDisciplina)
+		return Objects.equals(cargaHoraria, other.cargaHoraria) && Objects.equals(iddisciplina, other.iddisciplina)
 				&& Objects.equals(nomeDisciplina, other.nomeDisciplina);
 	}
 
@@ -135,7 +115,7 @@ public class Disciplina implements Serializable{
 
 	@Override
 	public String toString() {
-		return "Disciplina [idDisciplina=" + idDisciplina + ", nomeDisciplina=" + nomeDisciplina + ", cargaHoraria="
+		return "Disciplina [idDisciplina=" + iddisciplina + ", nomeDisciplina=" + nomeDisciplina + ", cargaHoraria="
 				+ cargaHoraria + "]";
 	}
 

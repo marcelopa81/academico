@@ -20,6 +20,11 @@ import jakarta.persistence.ManyToMany;
 @Entity
 public class Curso implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer idcurso;
@@ -33,13 +38,6 @@ public class Curso implements Serializable{
 				joinColumns = @JoinColumn(name = "idcurso"),
 				inverseJoinColumns = @JoinColumn(name="idaluno"))
 	private List<Aluno> listaAluno = new ArrayList<>();
-	
-	@ManyToMany
-	@JsonIgnore
-	@JoinTable(name = "disciplina_curso",
-				joinColumns = @JoinColumn(name = "idcurso"),
-				inverseJoinColumns = @JoinColumn(name="idDisciplina"))
-	private List<Disciplina> listaDisciplina = new ArrayList<>();
 	
 	
 	public Curso() {
@@ -65,18 +63,8 @@ public class Curso implements Serializable{
 		}
 		
 	}
-	
 
-	public List<Disciplina> getListaDisciplina () {
-		return listaDisciplina;
-	}
 
-	public void adicionarDisciplina (Disciplina d) {
-		if (!listaDisciplina.contains(d)) {
-			listaDisciplina.add(d);
-			d.adicionarCurso(this);
-		}
-	}
 
 	public Integer getIdcurso() {
 		return idcurso;

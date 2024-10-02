@@ -2,20 +2,27 @@ package br.edu.ifgoias.academico.entities;
 
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 
 @Entity
 public class Aluno implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,49 +37,51 @@ public class Aluno implements Serializable{
 	@Column(name = "dt_nasc", nullable = false)
 	private Date dt_nasc;
 	
-	@ManyToMany(mappedBy = "listaAluno")
-	private List<Curso> listaCurso = new ArrayList<>();
-	
-	@ManyToMany(mappedBy = "listaDisciplina")
-	private List<Disciplina> listaDisciplina =  new ArrayList<>();
-	
-	public Aluno() {
-	}
-	
-	public Aluno(Integer idaluno, String nome, String sexo, Date dt_nasc) {
-		this.idaluno = idaluno;
-		this.nome = nome;
-		this.sexo = sexo;
-		this.dt_nasc = dt_nasc;
-	}
-	
-	
-	public List<Curso> getListaCurso() {
-		return listaCurso;
-	}
-	
-	public List<Disciplina> getListaDisciplina() {
-		return listaDisciplina;
-	}
-	
+	 @ManyToMany
+	    @JoinTable(
+	        name = "aluno_disciplina",
+	        joinColumns = @JoinColumn(name = "idaluno"),
+	        inverseJoinColumns = @JoinColumn(name = "idedisciplina")
+	    )
+	    private Set<Disciplina> listaDisciplina = new HashSet<>();
 
-	public void adicionarCurso (Curso c) {
-		
-		if (!listaCurso.contains(c)) {
-			listaCurso.add(c);
-			c.adicionarAluno(this);
-		}		
-	}
-	
-public void adicionarDisciplina (Disciplina d) {
-		
-		if (!listaDisciplina.contains(d)) {
-			listaDisciplina.add(d);
-			d.adicionarAluno(this);
-		}
-		
-	}
+	    @ManyToMany
+	    @JoinTable(
+	        name = "aluno_curso",
+	        joinColumns = @JoinColumn(name = "idaluno"),
+	        inverseJoinColumns = @JoinColumn(name = "idcurso")
+	    )
+	    private Set<Curso> listaCurso = new HashSet<>();
 
+	    public Aluno() {}
+
+	    public Aluno(Integer idaluno, String nome, String sexo, Date dt_nasc) {
+	        this.idaluno = idaluno;
+	        this.nome = nome;
+	        this.sexo = sexo;
+	        this.dt_nasc = dt_nasc;
+	    }
+
+	    public Set<Disciplina> getListaDisciplina() {
+	        return listaDisciplina;
+	    }
+
+	    public Set<Curso> getListaCurso() {
+	        return listaCurso;
+	    }
+
+	    public void adicionarDisciplina(Disciplina d) {
+	        if (listaDisciplina.add(d)) {
+	            d.getListaAluno().add(this);
+	        }
+	    }
+
+	    public void adicionarCurso(Curso curso) {
+	        if (listaCurso.add(curso)) {
+	            curso.getListaAluno().add(this);
+	        }
+	    }
+	    
 	public Integer getIdaluno() {
 		return idaluno;
 	}
