@@ -45,10 +45,6 @@ public class Config implements CommandLineRunner {
 		
 		//discRep.save(d3);
 		
-	
-	
-		
-		// System.out.println("Disciplina salva com aluno: " + alunoRep.getNome());
 		
 	}
 
